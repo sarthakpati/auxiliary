@@ -15,7 +15,7 @@ write_to = "version.py"
 name = "auxiliary"
 requires-python = ">=3.5"
 # dynamic = ["version"]
-version = "0.0.2"
+version = "0.0.3"
 authors = [{ name = "Florian Kofler", email = "florian.kofler@tum.de" }]
 maintainers = [{ name = "Florian Kofler", email = "florian.kofler@tum.de" }]
 description = "TODO."
