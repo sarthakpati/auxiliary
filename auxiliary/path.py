@@ -2,23 +2,26 @@ from path import Path
 import os
 
 
-def turbopath(ipath):
-    """_summary_
+def turbopath(input_path):
+    """
+    Normalize and convert a given input path to a normalized Path object.
 
     Args:
-        ipath (_type_): _description_
+        input_path (str): The input path to be processed.
 
     Returns:
-        _type_: _description_
+        Path: A Path object representing the normalized absolute path.
     """
-    turbop = Path(
-        os.path.normpath(
-            os.path.abspath(
-                ipath,
-            )
+    # Normalize the input path by converting it to an absolute path
+    # and then normalizing any directory separators
+    normalized_path = os.path.normpath(
+        os.path.abspath(
+            input_path,
         )
     )
-    return turbop
+    # Create a Path object from the normalized absolute path
+    turbo_path = Path(normalized_path)
+    return turbo_path
 
 
 def name_extractor(input_path):
