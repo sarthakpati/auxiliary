@@ -15,7 +15,7 @@ write_to = "version.py"
 name = "auxiliary"
 requires-python = ">=3.5"
 # dynamic = ["version"]
-version = "0.0.6"
+version = "0.0.7"
 authors = [{ name = "Florian Kofler", email = "florian.kofler@tum.de" }]
 maintainers = [{ name = "Florian Kofler", email = "florian.kofler@tum.de" }]
 description = "TODO."
@@ -29,8 +29,9 @@ classifiers = [
 ]
 dependencies = [
   # core
-  'path==16.7.1',
-  'nibabel==3.2.1',
+  'path>=16.7.1',
+  'nibabel>=3.2.1',
+  'numpy>=1.25.2',
 ]
 
 [project.optional-dependencies]
