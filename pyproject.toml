@@ -2,7 +2,7 @@
 requires = ["setuptools>=61.0"]
 
 [tool.setuptools]
-packages = ["auxiliary"]
+packages = ["auxiliary", "auxiliary.*"]
 
 [tool.setuptools.dynamic]
 #version = {attr = "my_package.VERSION"}
@@ -15,7 +15,7 @@ write_to = "version.py"
 name = "auxiliary"
 requires-python = ">=3.5"
 # dynamic = ["version"]
-version = "0.0.10"
+version = "0.0.11"
 authors = [{ name = "Florian Kofler", email = "florian.kofler@tum.de" }]
 maintainers = [{ name = "Florian Kofler", email = "florian.kofler@tum.de" }]
 description = "TODO."
