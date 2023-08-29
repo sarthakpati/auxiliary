@@ -1,43 +1,15 @@
-[build-system]
-requires = ["setuptools>=61.0"]
-
-[tool.setuptools]
-packages = ["auxiliary", "auxiliary.*"]
-
-[tool.setuptools.dynamic]
-#version = {attr = "my_package.VERSION"}
-readme = { file = "README.md" }
-
-[tool.setuptools_scm]
-write_to = "version.py"
-
-[project]
+[tool.poetry]
 name = "auxiliary"
-requires-python = ">=3.5"
-# dynamic = ["version"]
-version = "0.0.11"
-authors = [{ name = "Florian Kofler", email = "florian.kofler@tum.de" }]
-maintainers = [{ name = "Florian Kofler", email = "florian.kofler@tum.de" }]
+version = "0.0.16"
 description = "TODO."
-keywords = ["biomedical image analysis", "utils", "helpers", "auxiliary"]
-readme = "README.md"
-# requires-python = "==3.10"
-classifiers = [
-  "Programming Language :: Python :: 3",
-  "License :: OSI Approved :: GNU Affero General Public License v3",
-  "Operating System :: OS Independent",
-]
-dependencies = [
-  # core
-  'path>=16.7.1',
-  'nibabel>=3.2.1',
-  'numpy>=1.25.2',
-]
+authors = ["Florian Kofler <florian.kofler@tum.de>"]
+license = "AGPL-3.0"
 
-[project.optional-dependencies]
-dev = ["pytest"]
+[tool.poetry.dependencies]
+python = "^3.6"
+pathlib = "^1.0"
+nibabel = "^3.2"
+numpy = "^1.25"
 
-
-[project.urls]
-# documentation = "TODO"
-repository = "https://github.com/BrainLesion/auxiliary"
+[tool.poetry.dev-dependencies]
+pytest = "^6.2"
