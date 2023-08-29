@@ -2,7 +2,7 @@ from path import Path
 import os
 
 
-def turbopath(input_path):
+def turbopath(input_path: str):
     """
     Normalize and convert a given input path to a normalized Path object.
 
@@ -24,7 +24,7 @@ def turbopath(input_path):
     return turbo_path
 
 
-def name_extractor(input_path):
+def name_extractor(input_path: str):
     input_path = turbopath(input_path)
     file_name = input_path.name
     parts = file_name.split(".")
