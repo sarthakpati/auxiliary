@@ -6,4 +6,7 @@ from .runscript import ScriptRunner
 
 from .normalization.percentile_normalizer import PercentileNormalizer
 from .normalization.windowing_normalizer import WindowingNormalizer
-from .normalization.functional import *
+from .normalization.functional import (
+    normalize_with_percentiles,
+    normalize_with_windowing,
+)
