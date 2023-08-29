@@ -7,7 +7,13 @@ class PercentileNormalizer(Normalizer):
     Normalizer subclass for percentile-based image normalization.
     """
 
-    def __init__(self, lower_percentile, upper_percentile, lower_limit, upper_limit):
+    def __init__(
+        self,
+        lower_percentile: float = 0.0,
+        upper_percentile: float = 100.0,
+        lower_limit: float = 0,
+        upper_limit: float = 1,
+    ):
         """
         Initialize the PercentileNormalizer.
 
@@ -23,7 +29,7 @@ class PercentileNormalizer(Normalizer):
         self.lower_limit = lower_limit
         self.upper_limit = upper_limit
 
-    def normalize(self, image):
+    def normalize(self, image: np.ndarray):
         """
         Normalize the input image using percentile-based mapping.
 
