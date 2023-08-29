@@ -1,9 +1,15 @@
 from .percentile_normalizer import PercentileNormalizer
 from .windowing_normalizer import WindowingNormalizer
 
+import numpy as np
+
 
 def normalize_with_percentiles(
-    image, lower_percentile, upper_percentile, lower_limit, upper_limit
+    image: np.ndarray,
+    lower_percentile: float = 0.0,
+    upper_percentile: float = 100.0,
+    lower_limit: float = 0,
+    upper_limit: float = 1,
 ):
     """
     Normalize an input image using percentile-based normalization.
@@ -29,7 +35,11 @@ def normalize_with_percentiles(
     return normalized_image
 
 
-def normalize_with_windowing(image, center, width):
+def normalize_with_windowing(
+    image: np.ndarray,
+    center: float,
+    width: float,
+):
     """
     Normalize an input image using windowing-based normalization.
 
