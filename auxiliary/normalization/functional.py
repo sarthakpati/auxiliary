@@ -1,4 +1,5 @@
 from .percentile_normalizer import PercentileNormalizer
+from .windowing_normalizer import WindowingNormalizer
 
 
 def normalize_with_percentiles(
