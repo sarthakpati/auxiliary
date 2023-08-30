@@ -1,4 +1,5 @@
 import nibabel as nib
+import numpy as np
 
 
 def write_nifti(
@@ -8,9 +9,13 @@ def write_nifti(
 ):
     if reference_nifti_path:
         reference = nib.load(reference_nifti_path)
-        the_nifti = nib.Nifti1Image(input_array, reference.affine, reference.header)
+        the_nifti = nib.Nifti1Image(
+            dataobj=input_array,
+            affine=reference.affine,
+            header=reference.header,
+        )
     else:
-        the_nifti = nib.Nifti1Image(input_array, reference.affine, reference.header)
+        the_nifti = nib.Nifti1Image(dataobj=input_array, affine=np.eye(4))
 
     nib.save(the_nifti, output_nifti_path)
 
