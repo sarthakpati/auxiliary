@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from .windowing_normalizer import WindowingNormalizer
 from .percentile_normalizer import PercentileNormalizer
 
+# TODO find a better solution for testing code like this
 
 if __name__ == "__main__":
     image = np.random.uniform(-100, 100, size=(512, 512))
