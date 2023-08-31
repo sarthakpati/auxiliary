@@ -7,6 +7,7 @@ TODO
 ### build
 ```
 python -m build
+poetry build
 ```
 
 ### upload to pypi
