@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "auxiliary"
-version = "0.0.19"
+version = "0.0.20"
 description = "TODO."
 authors = ["Florian Kofler <florian.kofler@tum.de>"]
 license = "AGPL-3.0"
