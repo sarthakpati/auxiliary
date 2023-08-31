@@ -32,22 +32,27 @@ def write_nifti(
 
 
 def read_nifti(
-    file_path: str,
+    input_nifti_path: str,
     maintain_dtype: bool = True,
 ) -> np.ndarray:
     """
     Read a NIfTI file and return its data as a NumPy array.
 
     Args:
-        file_path (str): Path to the input NIfTI file.
+        input_nifti_path (str): Path to the input NIfTI file.
         maintain_dtype (bool, optional): If True, maintain the data type of the NIfTI data.
                                          If False, allow data type conversion to float. Default is True.
 
     Returns:
-        numpy.ndarray or None: NIfTI data as a NumPy array, or None if there's an error.
+        numpy.ndarray: NIfTI data as a NumPy array.
     """
-    nifti_image = nib.load(file_path)
-    nifti_data = nifti_image.get_fdata(
-        dtype=nifti_image.header.get_data_dtype() if maintain_dtype else None
-    )
+    the_nifti = nib.load(input_nifti_path)
+    nifti_data = the_nifti.get_fdata()
+
+    if maintain_dtype:
+        # Get the data type from the NIfTI header
+        data_type = the_nifti.header.get_data_dtype()
+        # Convert data type if necessary
+        nifti_data = nifti_data.astype(data_type, copy=False)
+
     return nifti_data
