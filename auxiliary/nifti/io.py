@@ -3,7 +3,7 @@ import numpy as np
 
 
 def write_nifti(
-    input_array: str,
+    input_array: np.ndarray,
     output_nifti_path: str,
     reference_nifti_path: str = None,
 ):
