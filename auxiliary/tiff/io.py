@@ -12,8 +12,8 @@ def read_tiff(tiff_path: str):
 def write_tiff(
     numpy_array,
     output_tiff_path: str,
-    transpose: bool = True,
     create_parent_directory: bool = False,
+    transpose: bool = False,
 ):
     if transpose == True:
         numpy_array = numpy_array.T
