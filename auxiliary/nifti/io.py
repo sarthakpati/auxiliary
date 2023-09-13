@@ -1,11 +1,15 @@
 import nibabel as nib
 import numpy as np
+import os
+
+from auxiliary.path import turbopath
 
 
 def write_nifti(
     input_array: np.ndarray,
     output_nifti_path: str,
     reference_nifti_path: str = None,
+    create_parent_directory: bool = False,
 ):
     """
     Write a NIfTI file from a NumPy array.
@@ -28,6 +32,10 @@ def write_nifti(
     else:
         the_nifti = nib.Nifti1Image(dataobj=input_array, affine=np.eye(4))
 
+    if create_parent_directory == True:
+        output_nifti_path = turbopath(output_nifti_path)
+        parent_dir = output_nifti_path.parent
+        os.makedirs(parent_dir, exist_ok=True)
     nib.save(the_nifti, output_nifti_path)
 
 
