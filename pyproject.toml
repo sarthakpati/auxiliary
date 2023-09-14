@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "auxiliary"
-version = "0.0.29"
+version = "0.0.33"
 description = "TODO."
 authors = ["Florian Kofler <florian.kofler@tum.de>"]
 license = "AGPL-3.0"
@@ -9,10 +9,10 @@ license = "AGPL-3.0"
 python = ">=3.6"
 pathlib = "^1.0"
 nibabel = ">3.0"
-numpy = "^1.25"
+numpy = ">1.24"
 tifffile = ">2023.8.25"
 path = "^16.7.1"
-Pillow = "^10.0.0"
+pillow = ">=10.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2"
