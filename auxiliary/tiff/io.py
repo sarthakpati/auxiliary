@@ -1,7 +1,7 @@
 from tifffile import imread, imwrite
 import os
 
-from auxiliary.path import turbopath
+from auxiliary.turbopath import turbopath
 
 
 def read_tiff(tiff_path: str):

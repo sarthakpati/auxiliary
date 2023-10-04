@@ -2,7 +2,7 @@ import nibabel as nib
 import numpy as np
 import os
 
-from auxiliary.path import turbopath
+from auxiliary.turbopath import turbopath
 
 
 def write_nifti(
