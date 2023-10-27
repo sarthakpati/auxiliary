@@ -1,8 +1,9 @@
-from tifffile import imread, imwrite
 import os
-from auxiliary.turbopath import turbopath
-from typing import Union
+
 import numpy as np
+from tifffile import imread, imwrite
+
+from auxiliary.turbopath import turbopath
 
 
 def read_tiff(tiff_path: str) -> np.ndarray:

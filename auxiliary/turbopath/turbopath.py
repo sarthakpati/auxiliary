@@ -1,5 +1,6 @@
-from path import Path
 import os
+
+from path import Path
 
 
 def turbopath(input_path: str):

@@ -1,9 +1,10 @@
-import subprocess
-import platform
 import datetime
-import time
 import os
-from typing import List, Tuple, Optional
+import platform
+import subprocess
+import time
+
+from typing import List, Optional, Tuple
 
 
 class ScriptRunner:
