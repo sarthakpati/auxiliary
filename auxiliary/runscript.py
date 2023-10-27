@@ -3,6 +3,7 @@ import platform
 import datetime
 import time
 import os
+from typing import List, Tuple, Optional
 
 
 class ScriptRunner:
@@ -14,34 +15,32 @@ class ScriptRunner:
         log_path (str): Path to the log file where the script output will be saved.
 
     Methods:
-        run(input_params=None): Execute the script and capture the output in the log file.
+        run(input_params: Optional[List[str]] = None) -> Tuple[bool, str]:
+        Execute the script and capture the output in the log file.
 
-    Example:
-        # Create an instance of ScriptRunner
-        runner = ScriptRunner(script_path, log_path)
-
-        # Specify input parameters
-        input_params = ['-param1', 'value1', '-param2', 'value2']
-
-        # Call the run method to execute the script and capture the output in the log file
-        success, error = runner.run(input_params)
-        if success:
-            print("Script executed successfully. Check the log file for details.")
-        else:
-            print("Script execution failed:", error)
+        Returns:
+            Tuple[bool, str]: A tuple containing a boolean (True if script executed successfully, False otherwise)
+                             and an error message (empty string if no error occurred).
     """
 
-    def __init__(self, script_path, log_path):
+    def __init__(
+        self,
+        script_path: str,
+        log_path: str,
+    ) -> None:
         self.runner_path = os.path.dirname(os.path.abspath(__file__))
         self.script_path = os.path.abspath(script_path)
         self.log_path = log_path
         self.platform_command = "cmd /c" if platform.system() == "Windows" else "bash"
 
-    def _write_log_line(self, stream, line, log_file):
+    def _write_log_line(self, stream: str, line: str, log_file: object) -> None:
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         log_file.write(f"[{timestamp}] {stream}: {line}")
 
-    def run(self, input_params=None):
+    def run(
+        self,
+        input_params: Optional[List[str]] = None,
+    ) -> Tuple[bool, str]:
         """
         Execute the script and capture the output in the log file.
 
