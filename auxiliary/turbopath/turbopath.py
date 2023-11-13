@@ -1,5 +1,3 @@
-import os
-
 from path import Path
 
 
@@ -13,15 +11,13 @@ def turbopath(input_path: str):
     Returns:
         Path: A Path object representing the normalized absolute path.
     """
-    # Normalize the input path by converting it to an absolute path
-    # and then normalizing any directory separators
-    normalized_path = os.path.normpath(
-        os.path.abspath(
+    turbo_path = (
+        Path(
             input_path,
         )
+        .abspath()
+        .normpath()
     )
-    # Create a Path object from the normalized absolute path
-    turbo_path = Path(normalized_path)
     return turbo_path
 
 
