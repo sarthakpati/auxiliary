@@ -26,3 +26,6 @@ pillow = ">=10.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = ">=6.2"
+
+[tool.poetry.extras]
+docs = ["Sphinx","sphinx-copybutton", "sphinx-rtd-theme", "myst-parser"]
