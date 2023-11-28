@@ -2,11 +2,6 @@ normalization
 ============================================
 
 
-demo_normalizer
---------------------------------------------
-
-.. automodule:: auxiliary.normalization.demo_normalizer
-
 
 functional
 --------------------------------------------
