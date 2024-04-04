@@ -21,7 +21,18 @@ def turbopath(input_path: str):
     return turbo_path
 
 
-def name_extractor(input_path: str):
+def name_extractor(
+    input_path: str,
+) -> str:
+    """
+    Extracts the name of a file from the given input path.
+
+    Args:
+        input_path (str): The path to the file.
+
+    Returns:
+        str: The name of the file without the extension.
+    """
     input_path = turbopath(input_path)
     file_name = input_path.name
     parts = file_name.split(".")
