@@ -15,7 +15,7 @@ def turbopath(input_path: str):
         Path(
             input_path,
         )
-        .abspath()
+        .absolute()
         .normpath()
     )
     return turbo_path
