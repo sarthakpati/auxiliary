@@ -1,8 +1,9 @@
-from pathlib import Path
 from typing import Optional
+from warnings import warn
 
-import SimpleITK as sitk
 from numpy.typing import NDArray
+
+from auxiliary.io import read_image, write_image
 
 
 def write_nifti(
@@ -23,18 +24,17 @@ def write_nifti(
     Returns:
         None
     """
-    # Convert NumPy array to SimpleITK image (zyx expected)
-    image = sitk.GetImageFromArray(input_array)
-
-    if reference_nifti_path:
-        reference = sitk.ReadImage(reference_nifti_path)
-        image.CopyInformation(reference)
-
-    if create_parent_directory:
-        parent_dir = Path(output_nifti_path).parent
-        parent_dir.mkdir(parents=True, exist_ok=True)
-
-    sitk.WriteImage(image, output_nifti_path)
+    warn(
+        "'auxiliary.nifti.io.write_image' is deprecated and will be removed in future versions. Use 'auxiliary.io.write_image' instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    write_image(
+        input_array=input_array,
+        output_path=output_nifti_path,
+        reference_path=reference_nifti_path,
+        create_parent_directory=create_parent_directory,
+    )
 
 
 def read_nifti(
@@ -52,11 +52,12 @@ def read_nifti(
     Returns:
         numpy.ndarray: NIfTI data as a NumPy array.
     """
-
-    image = sitk.ReadImage(input_nifti_path)
-    if maintain_dtype:
-        array = sitk.GetArrayFromImage(image)
-    else:
-        array = sitk.GetArrayFromImage(sitk.Cast(image, sitk.sitkFloat32))
-
-    return array
+    warn(
+        "'auxiliary.nifti.io.read_image' is deprecated and will be removed in future versions. Use 'auxiliary.io.read_image' instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    return read_image(
+        input_path=input_nifti_path,
+        maintain_dtype=maintain_dtype,
+    )
