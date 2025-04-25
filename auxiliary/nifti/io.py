@@ -25,7 +25,7 @@ def write_nifti(
         None
     """
     warn(
-        "'auxiliary.nifti.io.write_image' is deprecated and will be removed in future versions. Use 'auxiliary.io.write_image' instead.",
+        "'auxiliary.nifti.io.write_nifti' is deprecated and will be removed in future versions. Use 'auxiliary.io.write_image' instead.",
         DeprecationWarning,
         stacklevel=2,
     )
@@ -53,7 +53,7 @@ def read_nifti(
         numpy.ndarray: NIfTI data as a NumPy array.
     """
     warn(
-        "'auxiliary.nifti.io.read_image' is deprecated and will be removed in future versions. Use 'auxiliary.io.read_image' instead.",
+        "'auxiliary.nifti.io.read_nifti' is deprecated and will be removed in future versions. Use 'auxiliary.io.read_image' instead.",
         DeprecationWarning,
         stacklevel=2,
     )
