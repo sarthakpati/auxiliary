@@ -31,6 +31,12 @@ Indices and tables
 
 .. toctree::
    :maxdepth: 2
+   :caption: IO:
+
+   io.rst
+
+.. toctree::
+   :maxdepth: 2
    :caption: nifti:
 
    nifti.rst
