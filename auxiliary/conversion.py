@@ -191,9 +191,9 @@ def nifti_to_dicom_itk(
                 image_slice.SetMetaData(tag, value)
             # Slice specific tags.
             #   Instance Creation Date
-            image_slice.SetMetaData("0008|0012", time.strftime("%Y%m%d"))
+            image_slice.SetMetaData("0008|0012", modification_time)
             #   Instance Creation Time
-            image_slice.SetMetaData("0008|0013", time.strftime("%H%M%S"))
+            image_slice.SetMetaData("0008|0013", modification_date)
             #   Image Position (Patient)
             image_slice.SetMetaData(
                 "0020|0032",
