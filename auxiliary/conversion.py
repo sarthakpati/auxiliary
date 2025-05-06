@@ -1,10 +1,11 @@
-import sys
-from pathlib import Path
 import time
+from pathlib import Path
 from typing import Optional, Union
 
+import numpy as np
 import SimpleITK as sitk
 from loguru import logger
+from numpy.typing import NDArray
 
 # TODO: add support for dicom to nifti using dcm2niix once https://github.com/rordenlab/dcm2niix/issues/931 is resolved
 
@@ -69,7 +70,7 @@ def dicom_to_nifti_itk(
 
 
 def nifti_to_dicom_itk(
-    input_path: Union[Path, str],
+    input_image: Union[Path, str, sitk.Image, NDArray],
     output_dir: Union[Path, str],
     reference_dicom_dir: Optional[Union[Path, str]] = None,
 ):
@@ -77,18 +78,29 @@ def nifti_to_dicom_itk(
     Convert a NIfTI image to DICOM format using SimpleITK.
 
     Args:
-        input_path (Union[Path, str]): Path to the input NIfTI file.
+        input_image (Union[Path, str, sitk.Image, NDArray]): Path to the input NIfTI image or a SimpleITK image or numpy array.
         output_dir (Union[Path, str]): Path to the output DICOM directory.
         reference_dicom_dir (Optional[Union[Path, str]], optional): Path to a reference DICOM directory for metadata. Defaults to None.
 
     Raises:
         RuntimeError: If no DICOM series is found in the reference directory.
+        TypeError: If input_image is not a valid type (file path, SimpleITK.Image, or np.ndarray).
     """
 
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    image = sitk.ReadImage(input_path)
+    # Load or convert input to SimpleITK.Image
+    if isinstance(input_image, (str, Path)):
+        image = sitk.ReadImage(str(input_image))
+    elif isinstance(input_image, sitk.Image):
+        image = input_image
+    elif isinstance(input_image, np.ndarray):
+        image = sitk.GetImageFromArray(input_image)
+    else:
+        raise TypeError(
+            "input_image must be a file path, SimpleITK.Image, or np.ndarray"
+        )
 
     if reference_dicom_dir:
         series_ids = sitk.ImageSeriesReader.GetGDCMSeriesIDs(str(reference_dicom_dir))
