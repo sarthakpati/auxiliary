@@ -9,12 +9,17 @@ from loguru import logger
 # TODO: add support for dicom to nifti using dcm2niix once https://github.com/rordenlab/dcm2niix/issues/931 is resolved
 
 
-def dicom_to_nifti_itk(input_dir: Union[Path, str], output_dir: Union[Path, str]):
+def dicom_to_nifti_itk(
+    input_dir: Union[Path, str],
+    output_dir: Union[Path, str],
+    file_name: Optional[str] = None,
+):
     """
     Convert a DICOM series to NIfTI format using SimpleITK.
     Args:
         input_dir (Union[Path, str]): Path to the input DICOM directory.
         output_dir (Union[Path, str]): Path to the output NIfTI directory.
+        file_name (Optional[str], optional): Name of the output NIfTI file if there is only one DICOM series to be converted. Defaults to None.
 
     Raises:
         RuntimeError: If the input directory is not valid or does not contain a DICOM series.
@@ -47,9 +52,19 @@ def dicom_to_nifti_itk(input_dir: Union[Path, str], output_dir: Union[Path, str]
         series_reader.LoadPrivateTagsOn()
         image_dicom = series_reader.Execute()
 
+        output_path = output_dir / f"{series_id}.nii.gz"
+
+        if file_name:
+            if len(series_IDs) > 1:
+                logger.warning(
+                    f"More than 1 DICOM series was found in the folder: {input_dir}. Ignoring the provided file name ({file_name}) and using the series ID ({series_id}) instead."
+                )
+            else:
+                output_path = output_dir / file_name
+
         sitk.WriteImage(
             image_dicom,
-            output_dir / f"{series_id}.nii.gz",
+            output_path,
         )
 
 
