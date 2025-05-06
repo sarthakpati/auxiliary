@@ -30,7 +30,7 @@ def dicom_to_nifti_itk(input_dir: Union[Path, str], output_dir: Union[Path, str]
     # create the folder output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    series_IDs = sitk.ImageSeriesReader.GetGDCMSeriesIDs(input_dir)
+    series_IDs = sitk.ImageSeriesReader.GetGDCMSeriesIDs(str(input_dir))
     if not series_IDs:
         raise RuntimeError(f"{input_dir} does not contain a valid DICOM series.")
 
