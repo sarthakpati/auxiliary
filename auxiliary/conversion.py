@@ -72,7 +72,7 @@ def dicom_to_nifti_itk(
 def nifti_to_dicom_itk(
     input_image: Union[Path, str, sitk.Image, NDArray],
     output_dir: Union[Path, str],
-    reference_dicom_dir: Optional[Union[Path, str]] = None,
+    reference_dicom: Optional[Union[Path, str]] = None,
 ):
     """
     Convert a NIfTI image to DICOM format using SimpleITK.
@@ -80,7 +80,7 @@ def nifti_to_dicom_itk(
     Args:
         input_image (Union[Path, str, sitk.Image, NDArray]): Path to the input NIfTI image or a SimpleITK image or numpy array.
         output_dir (Union[Path, str]): Path to the output DICOM directory.
-        reference_dicom_dir (Optional[Union[Path, str]], optional): Path to a reference DICOM directory for metadata. Defaults to None.
+        reference_dicom (Optional[Union[Path, str]], optional): Path to a reference DICOM file or directory for metadata. Defaults to None.
 
     Raises:
         RuntimeError: If no DICOM series is found in the reference directory.
@@ -102,24 +102,6 @@ def nifti_to_dicom_itk(
             "input_image must be a file path, SimpleITK.Image, or np.ndarray"
         )
 
-    if reference_dicom_dir:
-        series_ids = sitk.ImageSeriesReader.GetGDCMSeriesIDs(str(reference_dicom_dir))
-        if not series_ids:
-            raise RuntimeError(f"No DICOM series found in: {reference_dicom_dir}")
-        if len(series_ids) > 1:
-            logger.warning(
-                f"More than 1 DICOM series was found in the folder: {reference_dicom_dir}. Using the first one ({series_ids[0]}) as reference."
-            )
-        # Pick the first series by default
-        dicom_names = sitk.ImageSeriesReader.GetGDCMSeriesFileNames(
-            str(reference_dicom_dir), series_ids[0]
-        )
-
-        reader = sitk.ImageSeriesReader()
-        reader.SetFileNames(dicom_names)
-        reader.MetaDataDictionaryArrayUpdateOn()
-        reader.Execute()
-
     # Write to DICOM
     writer = sitk.ImageFileWriter()
     tags_to_copy = [
@@ -139,15 +121,45 @@ def nifti_to_dicom_itk(
     writer.KeepOriginalImageUIDOn()
     modification_time = time.strftime("%H%M%S")
     modification_date = time.strftime("%Y%m%d")
-
     direction = image.GetDirection()
 
-    if reference_dicom_dir:
-        series_tag_values = [
-            (k, reader.GetMetaData(0, k.lower()))
-            for k in tags_to_copy
-            if reader.HasMetaDataKey(0, k.lower())
-        ]
+    if reference_dicom:
+        reference_dicom_path = Path(reference_dicom)
+        if reference_dicom_path.is_dir():
+
+            series_ids = sitk.ImageSeriesReader.GetGDCMSeriesIDs(str(reference_dicom))
+            if not series_ids:
+                raise RuntimeError(f"No DICOM series found in: {reference_dicom}")
+            if len(series_ids) > 1:
+                logger.warning(
+                    f"More than 1 DICOM series was found in the folder: {reference_dicom}. Using the first one ({series_ids[0]}) as reference."
+                )
+            # Pick the first series by default
+            dicom_names = sitk.ImageSeriesReader.GetGDCMSeriesFileNames(
+                str(reference_dicom), series_ids[0]
+            )
+
+            reader = sitk.ImageSeriesReader()
+            reader.SetFileNames(dicom_names)
+            reader.MetaDataDictionaryArrayUpdateOn()
+            reader.Execute()
+
+            series_tag_values = [
+                (k, reader.GetMetaData(0, k.lower()))
+                for k in tags_to_copy
+                if reader.HasMetaDataKey(0, k.lower())
+            ]
+        elif reference_dicom_path.is_file():
+            image_ref = sitk.ReadImage(str(reference_dicom))
+            series_tag_values = [
+                (k, image_ref.GetMetaData(k.lower()))
+                for k in tags_to_copy
+                if image_ref.HasMetaDataKey(k.lower())
+            ]
+        else:
+            raise RuntimeError(
+                f"{reference_dicom} is not a valid DICOM file or directory."
+            )
     else:
         series_tag_values = []
 
