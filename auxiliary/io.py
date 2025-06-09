@@ -2,7 +2,6 @@ from pathlib import Path
 from typing import Optional
 
 import SimpleITK as sitk
-import numpy as np
 from numpy.typing import NDArray
 
 
