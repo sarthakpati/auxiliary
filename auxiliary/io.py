@@ -55,7 +55,7 @@ def read_image(
     """
 
     image = sitk.ReadImage(input_path)
-    if not force_dtype:
+    if force_dtype is None:
         array = sitk.GetArrayFromImage(image)
     else:
         array = sitk.GetArrayFromImage(sitk.Cast(image, force_dtype))
