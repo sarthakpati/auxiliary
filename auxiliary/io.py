@@ -6,7 +6,7 @@ from numpy.typing import NDArray
 
 
 def write_image(
-    input_array: NDArray,
+    input_array: str | NDArray,
     output_path: str,
     reference_path: Optional[str] = None,
     create_parent_directory: bool = False,
@@ -16,7 +16,7 @@ def write_image(
     Supports e.g. NIfTI and other formats. More details: https://simpleitk.readthedocs.io/en/master/IO.html
 
     Args:
-        input_array (np.ndarray): The NumPy array containing the data to be written.
+        input_array (numpy.ndarray or str): The NumPy array containing the data to be written or the path to it.
         output_path (str): The path where the output file will be saved.
         reference_path (str, optional): Path to a reference file for spatial metadata.
         create_parent_directory (bool): If True, create parent directories if they don't exist.
@@ -24,6 +24,10 @@ def write_image(
     Returns:
         None
     """
+
+    if isinstance(input_array, str):
+        input_array = read_image(input_path=input_array)
+
     # Convert NumPy array to SimpleITK image (zyx expected)
     image = sitk.GetImageFromArray(input_array)
 
