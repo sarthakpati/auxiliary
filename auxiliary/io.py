@@ -42,7 +42,7 @@ def write_image(
 
 def read_image(
     input_path: str,
-    maintain_dtype: bool = True,
+    force_dtype: Optional[int] = None,
 ) -> NDArray:
     """
     Read an image file using SimpleITK and return its data as a NumPy array.
@@ -50,17 +50,16 @@ def read_image(
 
     Args:
         input_path (str): Path to the input file.
-        maintain_dtype (bool, optional): If True, maintain the data type of the image data.
-                                         If False, allow data type conversion to float. Default is True.
+        force_dtype: Optional[int]: If provided, cast the image to the given sitk data type, e.g. sitk.sitkFloat32.
 
     Returns:
         numpy.ndarray: Image data as a NumPy array.
     """
 
     image = sitk.ReadImage(input_path)
-    if maintain_dtype:
+    if force_dtype is None:
         array = sitk.GetArrayFromImage(image)
     else:
-        array = sitk.GetArrayFromImage(sitk.Cast(image, sitk.sitkFloat32))
+        array = sitk.GetArrayFromImage(sitk.Cast(image, force_dtype))
 
     return array
