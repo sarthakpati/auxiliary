@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Optional
 
+import numpy as np
 import SimpleITK as sitk
 from numpy.typing import NDArray
 
@@ -25,6 +26,9 @@ def write_image(
     """
     if isinstance(input_array, str):
         input_array = read_image(input_path=input_array)
+    elif input_array.dtype == bool:
+        # Convert bool arrays to uint8 for SimpleITK compatibility
+        input_array = input_array.astype(np.uint8)
 
     # Convert NumPy array to SimpleITK image (zyx expected)
     image = sitk.GetImageFromArray(input_array)
