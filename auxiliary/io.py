@@ -17,7 +17,9 @@ def write_image(
     Supports e.g. NIfTI and other formats. More details: https://simpleitk.readthedocs.io/en/master/IO.html
 
     Args:
-        input_array (numpy.ndarray or str): The NumPy array containing the data to be written or the path to it.        output_path (str): The path where the output file will be saved.
+        input_array (numpy.ndarray or str): The NumPy array containing the data to be written or the path to it.
+            Note: boolean arrays will be converted to uint8.
+        output_path (str): The path where the output file will be saved.
         reference_path (str, optional): Path to a reference file for spatial metadata.
         create_parent_directory (bool): If True, create parent directories if they don't exist.
 
