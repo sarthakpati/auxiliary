@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Optional
 
+import numpy as np
 import SimpleITK as sitk
 from numpy.typing import NDArray
 
@@ -16,7 +17,9 @@ def write_image(
     Supports e.g. NIfTI and other formats. More details: https://simpleitk.readthedocs.io/en/master/IO.html
 
     Args:
-        input_array (numpy.ndarray or str): The NumPy array containing the data to be written or the path to it.        output_path (str): The path where the output file will be saved.
+        input_array (numpy.ndarray or str): The NumPy array containing the data to be written or the path to it.
+            Note: boolean arrays will be converted to uint8.
+        output_path (str): The path where the output file will be saved.
         reference_path (str, optional): Path to a reference file for spatial metadata.
         create_parent_directory (bool): If True, create parent directories if they don't exist.
 
@@ -25,6 +28,9 @@ def write_image(
     """
     if isinstance(input_array, str):
         input_array = read_image(input_path=input_array)
+    elif input_array.dtype == bool:
+        # Convert bool arrays to uint8 for SimpleITK compatibility
+        input_array = input_array.astype(np.uint8)
 
     # Convert NumPy array to SimpleITK image (zyx expected)
     image = sitk.GetImageFromArray(input_array)
