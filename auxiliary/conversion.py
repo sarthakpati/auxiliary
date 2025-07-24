@@ -10,7 +10,10 @@ from numpy.typing import NDArray
 
 
 def dcm2niix(
-    input_dir: Union[Path, str], output_dir: Union[Path, str], compress: bool = True
+    input_dir: Union[Path, str],
+    output_dir: Union[Path, str],
+    file_name: Optional[str] = None,
+    compress: bool = True,
 ) -> None:
     """
     Convert a DICOM series to NIfTI format using dcm2niix.
@@ -18,6 +21,7 @@ def dcm2niix(
     Args:
         input_dir (Union[Path, str]): Path to the input DICOM directory.
         output_dir (Union[Path, str]): Path to the output NIfTI directory.
+        file_name (Optional[str], optional): Custom naming for the output NIfTI file. For details refer to `dcm2niix -f` option documentation (https://github.com/rordenlab/dcm2niix). Defaults to None.
         compress (bool, optional): Whether to gz compress the output NIfTI file. Defaults to True.
 
     Raises:
@@ -33,13 +37,19 @@ def dcm2niix(
         raise RuntimeError(f"{input_dir} is not a valid directory.")
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    cmd = [
-        "dcm2niix",
+    cmd = ["dcm2niix"]
+
+    # Add filename pattern early (must come before input path)
+    if file_name:
+        cmd += ["-f", file_name]
+
+    # Add output options
+    cmd += [
         "-o",
         str(output_dir),
         "-z",
         "y" if compress else "n",
-        str(input_dir),
+        str(input_dir),  # always last
     ]
 
     try:
