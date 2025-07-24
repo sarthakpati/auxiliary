@@ -1,3 +1,4 @@
+import subprocess
 import time
 from pathlib import Path
 from typing import Optional, Union
@@ -7,14 +8,64 @@ import SimpleITK as sitk
 from loguru import logger
 from numpy.typing import NDArray
 
-# TODO: add support for dicom to nifti using dcm2niix once https://github.com/rordenlab/dcm2niix/issues/931 is resolved
+
+def dcm2niix(
+    input_dir: Union[Path, str],
+    output_dir: Union[Path, str],
+    file_name: Optional[str] = None,
+    compress: bool = True,
+) -> None:
+    """
+    Convert a DICOM series to NIfTI format using dcm2niix.
+
+    Args:
+        input_dir (Union[Path, str]): Path to the input DICOM directory.
+        output_dir (Union[Path, str]): Path to the output NIfTI directory.
+        file_name (Optional[str], optional): Custom naming for the output NIfTI file. For details refer to `dcm2niix -f` option documentation (https://github.com/rordenlab/dcm2niix). Defaults to None.
+        compress (bool, optional): Whether to gz compress the output NIfTI file. Defaults to True.
+
+    Raises:
+        RuntimeError: If the input directory is not valid or if the conversion fails.
+        RuntimeError: If the dcm2niix command fails.
+    """
+
+    # Ensure Path objects
+    input_dir = Path(input_dir)
+    output_dir = Path(output_dir)
+
+    if not input_dir.exists() or not input_dir.is_dir():
+        raise RuntimeError(f"{input_dir} is not a valid directory.")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    cmd = ["dcm2niix"]
+
+    # Add filename pattern early (must come before input path)
+    if file_name:
+        cmd += ["-f", file_name]
+
+    # Add output options
+    cmd += [
+        "-o",
+        str(output_dir),
+        "-z",
+        "y" if compress else "n",
+        str(input_dir),  # always last
+    ]
+
+    try:
+        subprocess.run(cmd, check=True)
+    except subprocess.CalledProcessError as e:
+        logger.error(f"Failed to convert DICOM to NIfTI using dcm2niix: {e}")
+        raise RuntimeError(
+            f"Failed to convert DICOM to NIfTI using dcm2niix: {e}"
+        ) from e
 
 
 def dicom_to_nifti_itk(
     input_dir: Union[Path, str],
     output_dir: Union[Path, str],
     file_name: Optional[str] = None,
-):
+) -> None:
     """
     Convert a DICOM series to NIfTI format using SimpleITK.
     Args:
